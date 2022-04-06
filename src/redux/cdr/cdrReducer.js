@@ -43,7 +43,10 @@ const reducer = (state, action) => {
       };
 
     default:
-      return cdrInitialState;
+      if (!state) {
+        return cdrInitialState;
+      }
+      return state;
   }
 };
 

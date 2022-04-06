@@ -7,7 +7,6 @@ import {
   UPDATE_USER_SUCCESS,
   VALIDATION_ERROR,
   LOGOUT_USER,
-  RESET_CDR_STATES,
 } from "./userTypes";
 
 import { initialState } from "./userActions";
@@ -42,13 +41,11 @@ const reducer = (state, action) => {
         error: action.payload.error,
       };
 
-    case RESET_CDR_STATES:
-      return {
-        ...state,
-      };
-
     default:
-      return initialState;
+      if (!state) {
+        return initialState;
+      }
+      return state;
   }
 };
 
