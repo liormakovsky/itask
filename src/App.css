@@ -1,0 +1,33 @@
+.App {
+  text-align: center;
+}
+
+.navbar_wrapper a {
+  margin-left: 30px;
+  text-decoration: none;
+  color: white;
+}
+.dropdown-item {
+  text-align: center;
+  cursor: pointer;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: black !important;
+  background-color: #e9ecef !important;
+}
+
+.spinner {
+  animation: spin infinite 2s linear;
+  font-size: 32pt;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
