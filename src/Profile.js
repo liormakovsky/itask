@@ -10,7 +10,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { user, isLoading } = useSelector((state) => state.userReducer);
 
-  const { name, email, location } = user;
+  const { name, email } = user;
 
   if (isLoading) {
     return (
@@ -20,7 +20,7 @@ const Profile = () => {
     );
   }
 
-  const initialValues = { name, email, location };
+  const initialValues = { name, email };
   const validationSchema = yup.object().shape({
     name: yup
       .string()
@@ -28,11 +28,6 @@ const Profile = () => {
       .max(99, "Too Long!")
       .required("Name is required"),
     email: yup.string().email().required("Email is required"),
-    location: yup
-      .string()
-      .min(2, "Too Short!")
-      .max(99, "Too Long!")
-      .required("Location is required"),
   });
 
   return (
@@ -63,16 +58,6 @@ const Profile = () => {
               <Field type="email" name="email" className="form-control" />
               <ErrorMessage
                 name="email"
-                component="span"
-                className="text-danger"
-              />
-            </div>
-
-            <div className="form-group mt-2">
-              <label htmlFor="location">Location</label>
-              <Field type="text" name="location" className="form-control" />
-              <ErrorMessage
-                name="location"
                 component="span"
                 className="text-danger"
               />

@@ -104,11 +104,10 @@ export const updateUser = (user, dispatch) => {
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
       axios.get("/sanctum/csrf-cookie").then(async (response) => {
-        const { name, email, location } = user;
+        const { name, email } = user;
         const { data } = await axios.post("api/v1/auth/updateUser", {
           name,
           email,
-          location,
         });
         const currentUser = data.data;
         dispatch({

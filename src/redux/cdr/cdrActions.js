@@ -5,7 +5,7 @@ import {
   UPLOAD_FILE_SUCCESS,
   UPLOAD_FILE_ERROR,
   VALIDATION_ERROR,
-  SET_INITIAL_STATE,
+  RESET_CDR_STATES,
 } from "./cdrTypes";
 
 export const cdrInitialState = {
@@ -59,6 +59,6 @@ export const uploadFile = (file) => {
 
 export const setInitialState = () => {
   return async (dispatch) => {
-    dispatch({ type: SET_INITIAL_STATE });
+    dispatch({ type: RESET_CDR_STATES });
   };
 };

@@ -3,7 +3,7 @@ import {
   UPLOAD_FILE_SUCCESS,
   UPLOAD_FILE_ERROR,
   VALIDATION_ERROR,
-  SET_INITIAL_STATE,
+  RESET_CDR_STATES,
 } from "./cdrTypes";
 
 import { cdrInitialState } from "./cdrActions";
@@ -35,9 +35,11 @@ const reducer = (state, action) => {
         error: action.payload.error,
       };
 
-    case SET_INITIAL_STATE:
+    case RESET_CDR_STATES:
       return {
-        cdrInitialState,
+        ...state,
+        isLoading: false,
+        fileUploaded: false,
       };
 
     default:
