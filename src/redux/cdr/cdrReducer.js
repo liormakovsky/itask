@@ -4,6 +4,9 @@ import {
   UPLOAD_FILE_ERROR,
   VALIDATION_ERROR,
   RESET_CDR_STATES,
+  GET_CDR_BEGIN,
+  GET_CDR_SUCCESS,
+  GET_CDR_ERROR,
 } from "./cdrTypes";
 
 import { cdrInitialState } from "./cdrActions";
@@ -40,6 +43,22 @@ const reducer = (state, action) => {
         ...state,
         isLoading: false,
         fileUploaded: false,
+      };
+
+    case GET_CDR_BEGIN:
+      return { ...state, isLoading: true };
+
+    case GET_CDR_SUCCESS:
+      return {
+        ...state,
+        cdr: action.payload,
+        isLoading: false,
+      };
+
+    case GET_CDR_ERROR:
+      return {
+        ...state,
+        isLoading: false,
       };
 
     default:
