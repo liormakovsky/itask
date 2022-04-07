@@ -4,7 +4,6 @@ import {
   UPLOAD_FILE_BEGIN,
   UPLOAD_FILE_SUCCESS,
   UPLOAD_FILE_ERROR,
-  VALIDATION_ERROR,
   RESET_CDR_STATES,
   GET_CDR_BEGIN,
   GET_CDR_SUCCESS,
@@ -17,26 +16,6 @@ export const cdrInitialState = {
   error: "",
   cdr: [],
 };
-
-// Add a response interceptor
-axios.interceptors.response.use(
-  function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    return response;
-  },
-  function (error) {
-    return (dispatch) => {
-      if (error.response.status === 403) {
-        dispatch({
-          type: VALIDATION_ERROR,
-          payload: { error: error.response.data.message },
-        });
-      }
-      return Promise.reject(error);
-    };
-  }
-);
 
 export const uploadFile = (file) => {
   return async (dispatch) => {

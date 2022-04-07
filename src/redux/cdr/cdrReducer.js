@@ -31,13 +31,6 @@ const reducer = (state, action) => {
         error: action.payload,
       };
 
-    case VALIDATION_ERROR:
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload.error,
-      };
-
     case RESET_CDR_STATES:
       return {
         ...state,

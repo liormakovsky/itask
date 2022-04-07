@@ -1,11 +1,13 @@
 import {
   SIGNUP_USER_BEGIN,
   SIGNUP_USER_SUCCESS,
+  SIGNUP_USER_ERROR,
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
   UPDATE_USER_BEGIN,
   UPDATE_USER_SUCCESS,
-  VALIDATION_ERROR,
+  UPDATE_USER_ERROR,
   LOGOUT_USER,
 } from "./userTypes";
 
@@ -28,17 +30,15 @@ const reducer = (state, action) => {
         error: "",
       };
 
+    case SIGNUP_USER_ERROR:
+    case LOGIN_USER_ERROR:
+    case UPDATE_USER_ERROR:
+      return { ...state, isLoading: false };
+
     case LOGOUT_USER:
       return {
         ...initialState,
         user: null,
-      };
-
-    case VALIDATION_ERROR:
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload.error,
       };
 
     default:

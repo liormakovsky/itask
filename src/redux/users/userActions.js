@@ -3,12 +3,14 @@ import axios from "axios";
 import {
   SIGNUP_USER_BEGIN,
   SIGNUP_USER_SUCCESS,
+  SIGNUP_USER_ERROR,
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
   UPDATE_USER_BEGIN,
   UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
   LOGOUT_USER,
-  VALIDATION_ERROR,
 } from "./userTypes";
 
 const user = localStorage.getItem("user");
@@ -23,26 +25,6 @@ axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.headers.post["Accept"] = "application/json";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.withCredentials = true;
-
-// Add a response interceptor
-axios.interceptors.response.use(
-  function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    return response;
-  },
-  function (error) {
-    return (dispatch) => {
-      if (error.response.status === 403) {
-        dispatch({
-          type: VALIDATION_ERROR,
-          payload: { error: error.response.data.message },
-        });
-      }
-      return Promise.reject(error);
-    };
-  }
-);
 
 const addUserToLocalStorage = ({ currentUser }) => {
   localStorage.setItem("user", JSON.stringify(currentUser));
@@ -63,12 +45,18 @@ export const signupUser = (user) => {
           email,
           password,
         });
-        const currentUser = data.data;
-        dispatch({
-          type: SIGNUP_USER_SUCCESS,
-          payload: { currentUser },
-        });
-        addUserToLocalStorage({ currentUser });
+        if (data !== undefined) {
+          const currentUser = data.data;
+          dispatch({
+            type: SIGNUP_USER_SUCCESS,
+            payload: { currentUser },
+          });
+          addUserToLocalStorage({ currentUser });
+        } else {
+          dispatch({
+            type: SIGNUP_USER_ERROR,
+          });
+        }
       });
     } catch (error) {
       console.log(error.response.data.message);
@@ -86,12 +74,18 @@ export const loginUser = (user) => {
           email,
           password,
         });
-        const currentUser = data.data;
-        dispatch({
-          type: LOGIN_USER_SUCCESS,
-          payload: { currentUser },
-        });
-        addUserToLocalStorage({ currentUser });
+        if (data !== undefined) {
+          const currentUser = data.data;
+          dispatch({
+            type: LOGIN_USER_SUCCESS,
+            payload: { currentUser },
+          });
+          addUserToLocalStorage({ currentUser });
+        } else {
+          dispatch({
+            type: LOGIN_USER_ERROR,
+          });
+        }
       });
     } catch (error) {
       console.log(error.response.data.message);
@@ -109,12 +103,18 @@ export const updateUser = (user, dispatch) => {
           name,
           email,
         });
-        const currentUser = data.data;
-        dispatch({
-          type: UPDATE_USER_SUCCESS,
-          payload: { currentUser },
-        });
-        addUserToLocalStorage({ currentUser });
+        if (data !== undefined) {
+          const currentUser = data.data;
+          dispatch({
+            type: UPDATE_USER_SUCCESS,
+            payload: { currentUser },
+          });
+          addUserToLocalStorage({ currentUser });
+        } else {
+          dispatch({
+            type: UPDATE_USER_ERROR,
+          });
+        }
       });
     } catch (error) {
       console.log(error.response.data.message);
