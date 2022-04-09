@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setInitialState, getCdrCalls } from "./redux";
 import { Table, Container, Row, Col } from "react-bootstrap";
 
-const UpdateProduct = () => {
+const CDRList = () => {
   const dispatch = useDispatch();
   const { isLoading, cdr } = useSelector((state) => state.cdrReducer);
 
@@ -65,4 +65,4 @@ const UpdateProduct = () => {
   );
 };
 
-export default UpdateProduct;
+export default CDRList;
