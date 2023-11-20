@@ -27,12 +27,12 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.withCredentials = true;
 
 // Get tasks
-export const getTasks = () => {
+export const getTasks = (userId) => {
   return async (dispatch) => {
     dispatch({ type: GET_TASKS_BEGIN });
     try {
       await axios.get("/sanctum/csrf-cookie");
-      const { data } = await axios.get("/api/v1/tasks");
+      const { data } = await axios.get(`/api/v1/tasks/${userId}`);
       if (data.success === true) {
         dispatch({ type: GET_TASKS_SUCCESS, payload: data.data });
       } else {
@@ -61,7 +61,7 @@ export const createTask = (user_id, taskData) => {
 
       if (data.success === true) {
         dispatch({ type: CREATE_TASK_SUCCESS, payload: data.data });
-        dispatch(getTasks());
+        dispatch(getTasks(data.data.user_id));
       } else {
         dispatch({ type: CREATE_TASK_ERROR, payload: data.message });
       }
@@ -91,6 +91,7 @@ export const updateTask = (taskId, taskData) => {
 
 // Delete task
 export const deleteTask = (taskId) => {
+  console.log(taskId);
   return async (dispatch) => {
     dispatch({ type: DELETE_TASK_BEGIN });
     try {

@@ -106,12 +106,12 @@ export const updateUser = (user, dispatch) => {
           role,
         });
         if (data !== undefined) {
-          const { user: updatedUser } = data;
+          const currentUser = data.user;
           dispatch({
             type: UPDATE_USER_SUCCESS,
-            payload: { currentUser: updatedUser },
+            payload: { currentUser },
           });
-          addUserToLocalStorage({ currentUser: updatedUser });
+          addUserToLocalStorage({ currentUser });
         } else {
           dispatch({
             type: UPDATE_USER_ERROR,
