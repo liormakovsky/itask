@@ -11,7 +11,7 @@ import { FaSpinner } from "react-icons/fa";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, isLoading } = useSelector((state) => state.userReducer);
+  const { user, isLoading, errors } = useSelector((state) => state.userReducer);
 
   useEffect(() => {
     if (user) {
@@ -78,6 +78,11 @@ const Login = () => {
           </Form>
         )}
       </Formik>
+      {errors && (
+        <div className="d-flex justify-content-center align-items-center text-danger m-2">
+          {errors.error ? errors.error : "Internal Error"}
+        </div>
+      )}
     </>
   );
 };

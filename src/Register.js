@@ -10,7 +10,7 @@ import { FaSpinner } from "react-icons/fa";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { user, isLoading } = useSelector((state) => state.userReducer);
+  const { user, isLoading, errors } = useSelector((state) => state.userReducer);
 
   const navigate = useNavigate();
 
@@ -27,8 +27,7 @@ const Register = () => {
       </div>
     );
   }
-
-  const initialValues = { name: "", email: "", password: "" };
+  const initialValues = { name: "", email: "", password: "", role: "user" };
   const validationSchema = yup.object().shape({
     name: yup
       .string()
@@ -102,6 +101,11 @@ const Register = () => {
           </Form>
         )}
       </Formik >
+      {errors && (
+        <div className="d-flex justify-content-center align-items-center text-danger m-2">
+          {errors.email ? errors.email : "Internal Error"}
+        </div>
+      )}
     </>
   );
 };

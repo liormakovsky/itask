@@ -16,6 +16,9 @@ const TasksList = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // Added currentPage state
+  const tasksPerPage = 5; // Adjust the number of tasks per page as needed
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     dispatch(getTasks(user.id));
@@ -73,6 +76,10 @@ const TasksList = () => {
     handleCloseDeleteModal();
   };
 
+  const handleSearch = (e) => {
+    setCurrentPage(1);
+    setSearchTerm(e.target.value);
+  };
 
   const validationSchema = yup.object().shape({
     title: yup.string().required("Task Name is required"),
@@ -86,6 +93,20 @@ const TasksList = () => {
     due_date: "",
   };
 
+
+  // Pagination logic
+  const indexOfLastTask = currentPage * tasksPerPage;
+  const indexOfFirstTask = indexOfLastTask - tasksPerPage;
+  const currentTasks = tasks
+    .filter(
+      (task) =>
+        task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        task.description.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .slice(indexOfFirstTask, indexOfLastTask);
+
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <Container>
       {/* Add Task Modal */}
@@ -244,12 +265,26 @@ const TasksList = () => {
       </Modal>
 
       <Row className="mt-3">
-        <Col lg={12}>
+        <Col lg={6}>
           <Button variant="success" onClick={handleAddTask}>
             Add Task
           </Button>
         </Col>
+
+        {/* Filter*/}
+
+        <Col lg={6} className="d-flex justify-content-end">
+          <Form.Group controlId="searchTerm">
+            <Form.Control
+              type="text"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+          </Form.Group>
+        </Col>
       </Row>
+
       <Row className="mt-3">
         <Col lg={12}>
           <Table striped bordered hover>
@@ -277,7 +312,7 @@ const TasksList = () => {
                   </td>
                 </tr>
               ) : (
-                tasks.map((task) => (
+                currentTasks.map((task) => (
                   <tr key={task.id}>
                     <td>{task.user && task.user.name}</td>
                     <td>{task.user && task.user.role}</td>
@@ -297,6 +332,16 @@ const TasksList = () => {
               )}
             </tbody>
           </Table>
+          {/* Pagination */}
+          <ul className="pagination">
+            {Array.from({ length: Math.ceil(tasks.length / tasksPerPage) }, (_, index) => (
+              <li key={index} className={`page-item ${index + 1 === currentPage ? "active" : ""}`}>
+                <span onClick={() => paginate(index + 1)} className="page-link">
+                  {index + 1}
+                </span>
+              </li>
+            ))}
+          </ul>
         </Col>
       </Row>
     </Container>

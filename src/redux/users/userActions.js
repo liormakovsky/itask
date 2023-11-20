@@ -10,6 +10,7 @@ import {
   UPDATE_USER_BEGIN,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+  ERROR_VALIDATION,
   LOGOUT_USER,
 } from "./userTypes";
 
@@ -38,6 +39,25 @@ export const signupUser = (user) => {
   return (dispatch) => {
     dispatch({ type: SIGNUP_USER_BEGIN });
     try {
+
+      axios.interceptors.response.use(
+        (response) => response,
+        (error) => {
+          if (error.response && error.response.status === 403) {
+            // Handle 403 error (e.g., redirect to login page)
+            console.log('403 Forbidden Error:', error);
+            const { data } = error.response;
+
+            dispatch({
+              type: ERROR_VALIDATION,
+              payload: { errors: data.data },
+            });
+
+          }
+          return Promise.reject(error);
+        }
+      );
+
       axios.get("/sanctum/csrf-cookie").then(async (response) => {
         const { name, email, role, password } = user;
         const { data } = await axios.post("api/v1/auth/register", {
@@ -70,6 +90,24 @@ export const loginUser = (user) => {
     dispatch({ type: LOGIN_USER_BEGIN });
     const { email, password } = user;
     try {
+
+      axios.interceptors.response.use(
+        (response) => response,
+        (error) => {
+          if (error.response && error.response.status === 403) {
+            // Handle 403 error (e.g., redirect to login page)
+            console.log('403 Forbidden Error:', error);
+            const { data } = error.response;
+
+            dispatch({
+              type: ERROR_VALIDATION,
+              payload: { errors: data.data },
+            });
+
+          }
+          return Promise.reject(error);
+        }
+      );
       axios.get("/sanctum/csrf-cookie").then(async (response) => {
         const { data } = await axios.post(`/api/v1/auth/login`, {
           email,

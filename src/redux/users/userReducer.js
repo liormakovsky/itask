@@ -2,6 +2,7 @@ import {
   SIGNUP_USER_BEGIN,
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR,
+  ERROR_VALIDATION,
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
@@ -35,6 +36,12 @@ const reducer = (state, action) => {
     case UPDATE_USER_ERROR:
       return { ...state, isLoading: false };
 
+    case ERROR_VALIDATION:
+      return {
+        ...state,
+        isLoading: false,
+        errors: action.payload.errors,
+      };
     case LOGOUT_USER:
       return {
         ...initialState,
