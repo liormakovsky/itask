@@ -126,7 +126,6 @@ export const updateUser = (user, dispatch) => {
 
 export const logoutUser = (dispatch) => {
   return (dispatch) => {
-
     dispatch({ type: LOGOUT_USER });
     removeUserFromLocalStorage();
   };
