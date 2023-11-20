@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { setInitialState, getCdrCalls } from "./redux";
+import { getTasks } from "./redux";
 import { Table, Container, Row, Col } from "react-bootstrap";
 
-const CDRList = () => {
+const TasksList = () => {
   const dispatch = useDispatch();
-  const { isLoading, cdr } = useSelector((state) => state.cdrReducer);
+  const { isLoading, tasks } = useSelector((state) => state.tasksReducer);
 
   useEffect(() => {
-    dispatch(setInitialState());
-    dispatch(getCdrCalls());
+    // dispatch(getTasks());
   }, []);
 
   if (isLoading) {
@@ -21,10 +20,10 @@ const CDRList = () => {
     );
   }
 
-  if (cdr.length === 0) {
+  if (tasks.length === 0) {
     return (
       <div className="loading d-flex justify-content-center align-items-center mt-5">
-        <h1>Please upload a file</h1>
+        <h1>Please insert your first task</h1>
       </div>
     );
   }
@@ -37,22 +36,22 @@ const CDRList = () => {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>Customer ID</th>
-                <th>Number of calls within same continent</th>
-                <th>Total duration of calls within same continent</th>
-                <th>Total number of all calls</th>
-                <th>Total duration of all calls</th>
+                <th>User Name</th>
+                <th>Role</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Due date</th>
               </tr>
             </thead>
             <tbody>
-              {cdr.map((call) => {
+              {tasks.map((task) => {
                 return (
-                  <tr key={call.customer_id}>
-                    <td>{call.customer_id}</td>
-                    <td>{call.total_calls_same_cont}</td>
-                    <td>{call.total_duration_same_cont}</td>
-                    <td>{call.total_calls}</td>
-                    <td>{call.total_duration}</td>
+                  <tr key={task.id}>
+                    <td>{task.user_name}</td>
+                    <td>{task.user_role}</td>
+                    <td>{task.title}</td>
+                    <td>{task.description}</td>
+                    <td>{task.duedate}</td>
                   </tr>
                 );
               })}
@@ -65,4 +64,4 @@ const CDRList = () => {
   );
 };
 
-export default CDRList;
+export default TasksList;

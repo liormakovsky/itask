@@ -6,9 +6,9 @@ import { useSelector } from "react-redux";
 const Protected = (props) => {
   const { user } = useSelector((state) => state.userReducer);
 
-  const sid = Cookies.get("XSRF-TOKEN") || "";
+  //const sid = Cookies.get("XSRF-TOKEN") || "";
 
-  if (!user || !sid) {
+  if (!user) {
     return <Navigate to="/login" />;
   }
 

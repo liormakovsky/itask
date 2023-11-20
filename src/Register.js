@@ -15,8 +15,8 @@ const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && Cookies.get("XSRF-TOKEN")) {
-      navigate("/cdr-list");
+    if (user) {
+      navigate("/tasks-list");
     }
   }, [user]);
 
@@ -84,6 +84,13 @@ const Register = () => {
                 className="text-danger"
               />
             </div>
+            <div className="form-group mt-2">
+              <label htmlFor="role">Role</label>
+              <Field as="select" name="role" className="form-control" placeholder="Select a Role">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </Field>
+            </div>
 
             <button
               type="submit"
@@ -94,7 +101,7 @@ const Register = () => {
             </button>
           </Form>
         )}
-      </Formik>
+      </Formik >
     </>
   );
 };

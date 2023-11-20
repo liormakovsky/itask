@@ -10,7 +10,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { user, isLoading } = useSelector((state) => state.userReducer);
 
-  const { name, email } = user;
+  const { name, email, role } = user;
 
   if (isLoading) {
     return (
@@ -27,7 +27,6 @@ const Profile = () => {
       .min(2, "Too Short!")
       .max(99, "Too Long!")
       .required("Name is required"),
-    email: yup.string().email().required("Email is required"),
   });
 
   return (
@@ -36,10 +35,11 @@ const Profile = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          dispatch(updateUser(values));
+          const updatedValues = { ...values, role: values.role || role }
+          dispatch(updateUser(updatedValues));
         }}
       >
-        {({ dirty, errors }) => (
+        {({ errors }) => (
           <Form className="col-4 offset-4">
             <h1>My Profile</h1>
 
@@ -54,19 +54,18 @@ const Profile = () => {
             </div>
 
             <div className="form-group mt-2">
-              <label htmlFor="email">Email</label>
-              <Field type="email" name="email" className="form-control" />
-              <ErrorMessage
-                name="email"
-                component="span"
-                className="text-danger"
-              />
+              <label htmlFor="role">Role</label>
+              <Field as="select" name="role" className="form-control" defaultValue={role}>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </Field>
+              <ErrorMessage name="role" component="span" className="text-danger" />
             </div>
 
             <button
               type="submit"
               className="btn btn-outline-primary mt-2"
-              disabled={isLoading || !_.isEmpty(errors) || !dirty}
+              disabled={isLoading || !_.isEmpty(errors)}
             >
               Update
             </button>

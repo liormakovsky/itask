@@ -17,12 +17,11 @@ const Header = () => {
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand>My Calls</Navbar.Brand>
+          <Navbar.Brand>Itask</Navbar.Brand>
           <Nav className="me-auto navbar_wrapper">
             {user ? (
               <>
-                <Link to="/upload-file">Upload File</Link>
-                <Link to="/cdr-list">CDR List</Link>
+                <Link to="/tasks-list">Tasks</Link>
               </>
             ) : (
               <>

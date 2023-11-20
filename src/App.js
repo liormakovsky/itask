@@ -4,8 +4,7 @@ import store from "./redux/store";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
-import UploadFile from "./UploadFile";
-import CDRList from "./CDRList";
+import TasksList from "./TasksList";
 import Profile from "./Profile";
 import Protected from "./Protected";
 import Header from "./Header";
@@ -21,27 +20,13 @@ function App() {
             <Route path="/login" element={<Login />}></Route>
             <Route path="/Register" element={<Register />}></Route>
             <Route
-              path="/upload-file"
+              path="/tasks-list"
               element={
                 <Protected
                   Cmp={() => {
                     return (
                       <>
-                        <UploadFile />
-                      </>
-                    );
-                  }}
-                />
-              }
-            ></Route>
-            <Route
-              path="/cdr-list"
-              element={
-                <Protected
-                  Cmp={() => {
-                    return (
-                      <>
-                        <CDRList />
+                        <TasksList />
                       </>
                     );
                   }}

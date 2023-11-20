@@ -21,7 +21,7 @@ export const initialState = {
   error: "",
 };
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "http://127.0.0.1:8000";
 axios.defaults.headers.post["Accept"] = "application/json";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.withCredentials = true;
@@ -39,10 +39,11 @@ export const signupUser = (user) => {
     dispatch({ type: SIGNUP_USER_BEGIN });
     try {
       axios.get("/sanctum/csrf-cookie").then(async (response) => {
-        const { name, email, password } = user;
+        const { name, email, role, password } = user;
         const { data } = await axios.post("api/v1/auth/register", {
           name,
           email,
+          role,
           password,
         });
         if (data !== undefined) {
@@ -98,18 +99,19 @@ export const updateUser = (user, dispatch) => {
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
       axios.get("/sanctum/csrf-cookie").then(async (response) => {
-        const { name, email } = user;
+        const { name, email, role } = user;
         const { data } = await axios.post("api/v1/auth/updateUser", {
           name,
           email,
+          role,
         });
         if (data !== undefined) {
-          const currentUser = data.data;
+          const { user: updatedUser } = data;
           dispatch({
             type: UPDATE_USER_SUCCESS,
-            payload: { currentUser },
+            payload: { currentUser: updatedUser },
           });
-          addUserToLocalStorage({ currentUser });
+          addUserToLocalStorage({ currentUser: updatedUser });
         } else {
           dispatch({
             type: UPDATE_USER_ERROR,
@@ -124,14 +126,7 @@ export const updateUser = (user, dispatch) => {
 
 export const logoutUser = (dispatch) => {
   return (dispatch) => {
-    axios
-      .post("api/v1/auth/logout")
-      .then(function (response) {
-        dispatch({ type: LOGOUT_USER });
-        removeUserFromLocalStorage();
-      })
-      .catch(function (error) {
-        console.log(error.response.data.message);
-      });
+    dispatch({ type: LOGOUT_USER });
+    removeUserFromLocalStorage();
   };
 };

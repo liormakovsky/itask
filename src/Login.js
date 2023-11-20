@@ -14,8 +14,8 @@ const Login = () => {
   const { user, isLoading } = useSelector((state) => state.userReducer);
 
   useEffect(() => {
-    if (user && Cookies.get("XSRF-TOKEN")) {
-      navigate("/cdr-list");
+    if (user) {
+      navigate("/tasks-list");
     }
   }, [user]);
 
